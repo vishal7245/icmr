@@ -180,7 +180,6 @@ class NewLabDialog(QDialog):
     
     def search_antibiotics(self):
         filter_text = self.ui.antibiotics_search.text().lower()
-        print("AAAA")
         # Clear the list widget
         self.ui.antibiotic_list.clear()
 
