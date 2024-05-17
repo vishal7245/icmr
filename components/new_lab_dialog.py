@@ -134,6 +134,18 @@ class NewLabDialog(QDialog):
             cloned_item.setData(ANTIBIOTIC_CODE_ROLE, updated_code)
             cloned_item.setText(cloned_item.data(ANTIBIOTIC_CODE_ROLE)+"\t"+ cloned_item.data(ANTIBIOTIC_NAME_ROLE))
 
+            #Check if the antibiotic is already in the list
+            num_antibiotics = self.ui.antibiotic_local_list.count()
+            if num_antibiotics > 1:
+                for i in range(num_antibiotics-1):
+                    item = self.ui.antibiotic_local_list.item(i)
+                    if item.data(ANTIBIOTIC_CODE_ROLE) == updated_code:
+                        QMessageBox.warning(self, "Warning", "Antibiotic already in the list", QMessageBox.Ok)
+                        self.ui.antibiotic_local_list.takeItem(self.ui.antibiotic_local_list.row(cloned_item))
+                        break
+                
+
+
 
     def remove_antibiotic(self):
         selected_items = self.ui.antibiotic_local_list.selectedItems()
@@ -205,6 +217,3 @@ class NewLabDialog(QDialog):
                 self.ui.antibiotic_list.addItem(new_item)
 
 
-# To Do
-# Fix lab code
-# add search functionality
