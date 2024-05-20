@@ -551,7 +551,7 @@
        <string>Edit</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="listWidget_5">
+     <widget class="QListWidget" name="institution_listview">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -592,7 +592,7 @@
        <string>Edit</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="listWidget_4">
+     <widget class="QListWidget" name="department_listview">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -615,25 +615,7 @@
      <property name="title">
       <string>Location type</string>
      </property>
-     <widget class="QPushButton" name="location_type_edit_button">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>25</y>
-        <width>50</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>8</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Edit</string>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="listWidget_3">
+     <widget class="QListWidget" name="location_type_listview">
       <property name="geometry">
        <rect>
         <x>10</x>

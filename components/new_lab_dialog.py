@@ -1,5 +1,5 @@
 import sys, csv, re
-from PySide6.QtWidgets import QDialog, QAbstractItemView, QListWidgetItem, QMessageBox
+from PySide6.QtWidgets import QDialog, QAbstractItemView, QListWidgetItem, QMessageBox, QHeaderView, QTableWidgetItem
 from modules.ui_new_lab_dialog import Ui_Dialog
 from PySide6.QtCore import Qt
 
@@ -8,6 +8,12 @@ ANTIBIOTIC_CODE_ROLE = Qt.UserRole + 1
 ANTIBIOTIC_NAME_ROLE = Qt.UserRole + 2
 ANTIBIOTIC_POTENCY_ROLE = Qt.UserRole + 3
 
+DEPARTMENT_CODE_ROLE = Qt.UserRole + 1
+DEPARTMENT_NAME_ROLE = Qt.UserRole + 2
+
+LOCATION_TYPE_CODE_ROLE = Qt.UserRole + 1
+LOCATION_TYPE_NAME_ROLE = Qt.UserRole + 2
+
 class NewLabDialog(QDialog):
     def __init__(self):
         super(NewLabDialog, self).__init__()
@@ -15,6 +21,8 @@ class NewLabDialog(QDialog):
         self.ui.setupUi(self)
         self.populate_country_combobox()
         self.populate_antibiotic_list()
+        self.populate_departments()
+        self.populate_location_type()
 
         self.ui.tabWidget.setCurrentIndex(0)
         self.setFixedSize(1080, 600)
@@ -28,13 +36,26 @@ class NewLabDialog(QDialog):
         self.ui.antibiotic_guidelines_combobox.addItems(["CLSI 2023(United States)", "EUCAST 2023(Europe)"])
         self.ui.antibiotics_disk_radio.setChecked(True)
 
+        # Location Table View
+        self.ui.location_table_list.setColumnCount(5)
+        self.ui.location_table_list.setHorizontalHeaderLabels(["Location name","Code","Institution","Department","Location Type"])
+        self.ui.location_table_list.verticalHeader().setVisible(False)
+        self.ui.location_table_list.insertRow(0)
+        self.selected_row = None
+
+        header = self.ui.location_table_list.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QHeaderView.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.Stretch)
+        header.setSectionResizeMode(4, QHeaderView.Stretch)
+
         # Connecting Signals
         self.ui.general_country_combobox.currentIndexChanged.connect(self.update_country_info)
         self.ui.general_labcode_lineedit.textChanged.connect(self.update_configuration_label)
         self.ui.antibiotics_add_button.clicked.connect(self.move_antibiotic_right)
         self.ui.antibiotics_add_button.clicked.connect(self.update_num_antibiotics_label)
         self.ui.antibiotics_remove_button.clicked.connect(self.remove_antibiotic)
-        self.ui.antibiotics_breakpoint_button.clicked.connect(self.list_antibiotics)
         self.ui.antibiotic_local_list.itemSelectionChanged.connect(self.update_fullname_label)
         self.ui.antibiotic_guidelines_combobox.currentIndexChanged.connect(self.update_fullname_label)
         self.ui.antibiotics_disk_radio.clicked.connect(self.update_fullname_label)
@@ -43,7 +64,11 @@ class NewLabDialog(QDialog):
         self.ui.antibiotics_remove_button.clicked.connect(self.update_num_antibiotics_label)
         self.ui.antibiotics_remove_button.clicked.connect(self.update_fullname_label)
         self.ui.antibiotics_search.textChanged.connect(self.search_antibiotics)
-
+        self.ui.location_table_list.itemSelectionChanged.connect(self.selected_location_tablelist)
+        self.ui.location_table_list.cellChanged.connect(self.add_row_location_table)
+        self.ui.department_listview.itemClicked.connect(self.update_department)
+        self.ui.location_type_listview.itemClicked.connect(self.update_location_type)
+        self.ui.location_table_list.cellChanged.connect(self.select_row_on_edit)
 
         # Store original antibiotics
         self.original_antibiotics = []
@@ -69,10 +94,9 @@ class NewLabDialog(QDialog):
         lab_code = self.ui.general_labcode_lineedit.text()
         if country_code and lab_code:
             self.ui.general_configfile_name.setText(f"{country_code}{lab_code}.sqlite")
-   
+
     def onFocusOutEvent(self, event):
         self.ui.general_labcode_lineedit.clearFocus()
-
 
     def populate_antibiotic_list(self):
         with open("data/Antibiotics.csv", newline="") as antibioticslist:
@@ -103,7 +127,6 @@ class NewLabDialog(QDialog):
 
                 self.ui.antibiotic_list.addItem(item)
 
-    
     def move_antibiotic_right(self):
         selected_items = self.ui.antibiotic_list.selectedItems()
         for item in selected_items:
@@ -130,7 +153,10 @@ class NewLabDialog(QDialog):
                 else:
                     potency_fallback = re.search(r"\d+", cloned_item.data(ANTIBIOTIC_POTENCY_ROLE))                          # Fallback if no potency value found
                     potency = potency_fallback.group()
-                updated_code = cloned_item.data(ANTIBIOTIC_CODE_ROLE) +"_"+ selected_guidelines + selected_radio + potency
+                if selected_radio == "D":
+                    updated_code = cloned_item.data(ANTIBIOTIC_CODE_ROLE) +"_"+ selected_guidelines + selected_radio + potency
+                else:
+                    updated_code = cloned_item.data(ANTIBIOTIC_CODE_ROLE) +"_"+ selected_guidelines + selected_radio 
             cloned_item.setData(ANTIBIOTIC_CODE_ROLE, updated_code)
             cloned_item.setText(cloned_item.data(ANTIBIOTIC_CODE_ROLE)+"\t"+ cloned_item.data(ANTIBIOTIC_NAME_ROLE))
 
@@ -143,24 +169,11 @@ class NewLabDialog(QDialog):
                         QMessageBox.warning(self, "Warning", "Antibiotic already in the list", QMessageBox.Ok)
                         self.ui.antibiotic_local_list.takeItem(self.ui.antibiotic_local_list.row(cloned_item))
                         break
-                
-
-
 
     def remove_antibiotic(self):
         selected_items = self.ui.antibiotic_local_list.selectedItems()
         for item in selected_items:
             self.ui.antibiotic_local_list.takeItem(self.ui.antibiotic_local_list.row(item))
-
-
-    def list_antibiotics(self):
-        total_antibiotics = self.ui.antibiotic_local_list.count()
-        if total_antibiotics > 0:
-            for i in range(total_antibiotics):
-                item = self.ui.antibiotic_local_list.item(i)
-                print(item.data(ANTIBIOTIC_CODE_ROLE))
-                print(item.data(ANTIBIOTIC_NAME_ROLE))
-                print(item.data(ANTIBIOTIC_POTENCY_ROLE))
 
     def update_num_antibiotics_label(self):
         num_antibiotics = self.ui.antibiotic_local_list.count()
@@ -216,4 +229,53 @@ class NewLabDialog(QDialog):
                 new_item.setData(ANTIBIOTIC_POTENCY_ROLE, potency_data)
                 self.ui.antibiotic_list.addItem(new_item)
 
+    def populate_departments(self):
+        self.ui.department_listview.addItem("None")
+        with open("data/DEPARTMENT.csv", newline="") as departmentcsv:
+            reader = csv.reader(departmentcsv, delimiter='\t')
+            next(reader)
+            for row in reader:
+                item = QListWidgetItem()
+                item.setData(DEPARTMENT_CODE_ROLE, row[0])
+                item.setData(DEPARTMENT_NAME_ROLE, row[1])
+                item.setText(row[0]+ "\t"+ row[1])
+                self.ui.department_listview.addItem(item)
 
+    def populate_location_type(self):
+        self.ui.location_type_listview.addItem("None")
+        with open("data/LOCATION_TYPE.csv", newline="") as locationtypecsv:
+            reader = csv.reader(locationtypecsv, delimiter='\t')
+            next(reader)
+            for row in reader:
+                item = QListWidgetItem()
+                item.setData(LOCATION_TYPE_CODE_ROLE, row[0])
+                item.setData(LOCATION_TYPE_NAME_ROLE, row[1])
+                item.setText(row[0]+ "\t"+ row[1])
+                self.ui.location_type_listview.addItem(item)
+
+    def add_row_location_table(self, row, column):
+        if row == self.ui.location_table_list.rowCount() -1:
+            for col in range(self.ui.location_table_list.columnCount()):
+                item = self.ui.location_table_list.item(row,col)
+                if item and item.text():
+                    self.ui.location_table_list.insertRow(self.ui.location_table_list.rowCount())
+                    break
+
+    def selected_location_tablelist(self):
+        selected_items = self.ui.location_table_list.selectedItems()
+        if selected_items:
+            self.selected_row = selected_items[0].row()
+        else:
+            self.selected_row = None
+
+    def update_department(self, item):
+        if self.selected_row is not None:
+            self.ui.location_table_list.setItem(self.selected_row, 3, QTableWidgetItem(item.data(DEPARTMENT_CODE_ROLE)))
+
+    def update_location_type(self, item):
+        if self.selected_row is not None:
+            self.ui.location_table_list.setItem(self.selected_row, 4, QTableWidgetItem(item.data(LOCATION_TYPE_CODE_ROLE)))
+
+    def select_row_on_edit(self, row, column):
+        self.selected_row = row
+        self.ui.location_table_list.selectRow(row)

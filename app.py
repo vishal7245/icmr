@@ -12,6 +12,9 @@ class MainWindow(QMainWindow):
         self.create_data_directory()
         self.show()
         self.showMaximized()
+        self.new_lab()
+
+        self.ui.actionNew_Laboratory.triggered.connect(self.new_lab)
 
 
     def create_data_directory(self):
@@ -22,13 +25,14 @@ class MainWindow(QMainWindow):
         else:
             print(f"Directory '{data_dir}' already exists.")
 
+    def new_lab(self):
+        lab_dialog = LabDialog()
+        lab_dialog.exec()
 
 def main():
     app = QApplication(sys.argv)
 
     window = MainWindow()
-    lab_dialog = LabDialog()
-    lab_dialog.exec() 
 
     sys.exit(app.exec())
 

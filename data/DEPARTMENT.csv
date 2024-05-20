@@ -1,0 +1,28 @@
+WHONET_Code	Description
+aicu	Adult intensive care unit
+burn	Burn
+com	Community
+ccu	Coronary care unit
+eme	Emergency
+hao	Hematology/Oncology
+inf	Infectious diseases
+icu	Intensive care unit
+int	Intermediate care unit
+lab	Laboratory
+med	Medicine
+mix	Mixed
+nicu	Neonatal intensive care unit
+neo	Neonatology
+nur	Nursing home
+obg	Obstetrics/Gynecology
+oth	Other
+cli	Other clinic
+hos	Other hospital
+out	Outpatient
+picu	Pediatric intensive care unit
+ped	Pediatrics
+psy	Psychiatry
+sur	Surgery
+tran	Transplant service
+trm	Traumatology
+unk	Unknown

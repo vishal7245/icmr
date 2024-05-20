@@ -1,0 +1,44 @@
+WHONET_Code	Description
+aba	Abattoir
+caf	Cafeteria
+cat	Catered event
+com	Community
+dxc	Diagnostic laboratory
+eme	Emergency
+env	Environment
+est	Estuary
+far	Farm
+fie	Field
+tnk	Fish tank
+dis	Food distributor
+fac	Food manufacturer
+sto	Food store
+hom	Home
+in	Inpatient
+inx	Inpatient (Non-ICU)
+ins	Institution
+icu	Intensive care unit
+lab	Laboratory
+lak	Lake
+mgr	Mangrove swamp
+mix	Mixed
+nur	Nursing home
+oce	Ocean
+onl	Online purchase
+oth	Other
+hos	Other hospital
+mar	Outdoor market
+out	Outpatient
+pet	Pet store
+pnd	Pond
+res	Restaurant
+riv	River
+sma	Salt marsh
+sea	Sea
+sla	Slaughterhouse
+swa	Swamp
+unk	Unknown
+vet	Veterinary clinic
+veh	Veterinary hospital
+wil	Wild
+zoo	Zoo
