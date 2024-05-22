@@ -1,12 +1,17 @@
 import sys, csv, re
 from PySide6.QtWidgets import QDialog, QAbstractItemView, QListWidgetItem, QMessageBox, QHeaderView, QTableWidgetItem
 from modules.ui_new_lab_dialog import Ui_Dialog
+from components.breakpoint_dialog import BreakpointDialog
 from PySide6.QtCore import Qt
+import pandas as pd
 
 # custom roles
 ANTIBIOTIC_CODE_ROLE = Qt.UserRole + 1
 ANTIBIOTIC_NAME_ROLE = Qt.UserRole + 2
 ANTIBIOTIC_POTENCY_ROLE = Qt.UserRole + 3
+ANTIBIOTIC_FULL_NAME_ROLE = Qt.UserRole + 4
+ANTIBIOTIC_GUIDELINES_ROLE = Qt.UserRole + 5
+ANTIBIOTIC_TEST_ROLE = Qt.UserRole + 6
 
 DEPARTMENT_CODE_ROLE = Qt.UserRole + 1
 DEPARTMENT_NAME_ROLE = Qt.UserRole + 2
@@ -69,6 +74,7 @@ class NewLabDialog(QDialog):
         self.ui.department_listview.itemClicked.connect(self.update_department)
         self.ui.location_type_listview.itemClicked.connect(self.update_location_type)
         self.ui.location_table_list.cellChanged.connect(self.select_row_on_edit)
+        self.ui.antibiotics_breakpoint_button.clicked.connect(self.open_breakpoint_dialog)
 
         # Store original antibiotics
         self.original_antibiotics = []
@@ -135,15 +141,20 @@ class NewLabDialog(QDialog):
             selected_guidelines = self.ui.antibiotic_guidelines_combobox.currentText()
             if selected_guidelines == "CLSI 2023(United States)":
                 selected_guidelines = "N"
+                cloned_item.setData(ANTIBIOTIC_GUIDELINES_ROLE, "CLSI")
             else:
                 selected_guidelines = "E"
+                cloned_item.setData(ANTIBIOTIC_GUIDELINES_ROLE, "EUCAST")
             selected_radio = ""
             if self.ui.antibiotics_disk_radio.isChecked():
                 selected_radio = "D"
+                cloned_item.setData(ANTIBIOTIC_TEST_ROLE, "Disk")
             elif self.ui.antibiotics_mic_radio.isChecked():
                 selected_radio = "M"
+                cloned_item.setData(ANTIBIOTIC_TEST_ROLE, "MIC")
             elif self.ui.antibiotics_etest_radio.isChecked():
                 selected_radio = "E"
+                cloned_item.setData(ANTIBIOTIC_TEST_ROLE, "Etest")
             if cloned_item.data(ANTIBIOTIC_POTENCY_ROLE) == 0:
                 updated_code = cloned_item.data(ANTIBIOTIC_CODE_ROLE) +"_"+ selected_guidelines + selected_radio
             else:
@@ -159,6 +170,10 @@ class NewLabDialog(QDialog):
                     updated_code = cloned_item.data(ANTIBIOTIC_CODE_ROLE) +"_"+ selected_guidelines + selected_radio 
             cloned_item.setData(ANTIBIOTIC_CODE_ROLE, updated_code)
             cloned_item.setText(cloned_item.data(ANTIBIOTIC_CODE_ROLE)+"\t"+ cloned_item.data(ANTIBIOTIC_NAME_ROLE))
+            if cloned_item.data(ANTIBIOTIC_POTENCY_ROLE) == 0:
+                cloned_item.setData(ANTIBIOTIC_FULL_NAME_ROLE, cloned_item.data(ANTIBIOTIC_NAME_ROLE) +"_"+ cloned_item.data(ANTIBIOTIC_GUIDELINES_ROLE) +"_"+ cloned_item.data(ANTIBIOTIC_TEST_ROLE))
+            else:
+                cloned_item.setData(ANTIBIOTIC_FULL_NAME_ROLE, cloned_item.data(ANTIBIOTIC_NAME_ROLE) +"_"+ cloned_item.data(ANTIBIOTIC_GUIDELINES_ROLE) +"_"+ cloned_item.data(ANTIBIOTIC_TEST_ROLE) +"_"+ cloned_item.data(ANTIBIOTIC_POTENCY_ROLE))
 
             #Check if the antibiotic is already in the list
             num_antibiotics = self.ui.antibiotic_local_list.count()
@@ -182,24 +197,7 @@ class NewLabDialog(QDialog):
     def update_fullname_label(self):
         if self.ui.antibiotic_local_list.currentItem() is not None:
             selected_item = self.ui.antibiotic_local_list.currentItem()
-            selected_guidelines = self.ui.antibiotic_guidelines_combobox.currentText()
-            if selected_guidelines == "CLSI 2023(United States)":
-                selected_guidelines = "CLSI"
-            else:
-                selected_guidelines = "EUCAST"
-            potency = selected_item.data(ANTIBIOTIC_POTENCY_ROLE)
-            selected_radio = ""
-            if self.ui.antibiotics_disk_radio.isChecked():
-                selected_radio = "Disk"
-            elif self.ui.antibiotics_mic_radio.isChecked():
-                selected_radio = "MIC"
-            elif self.ui.antibiotics_etest_radio.isChecked():
-                selected_radio = "E-Test"
-
-            if potency == 0:
-                self.ui.antibiotics_full_name.setText(f"{selected_item.data(ANTIBIOTIC_NAME_ROLE)}_{selected_guidelines}_{selected_radio}")
-            else:
-                self.ui.antibiotics_full_name.setText(f"{selected_item.data(ANTIBIOTIC_NAME_ROLE)}_{selected_guidelines}_{selected_radio}_{potency}")
+            self.ui.antibiotics_full_name.setText(f"{selected_item.data(ANTIBIOTIC_FULL_NAME_ROLE)}")
         else:
             self.ui.antibiotics_full_name.clear()
     
@@ -279,3 +277,34 @@ class NewLabDialog(QDialog):
     def select_row_on_edit(self, row, column):
         self.selected_row = row
         self.ui.location_table_list.selectRow(row)
+
+    def open_breakpoint_dialog(self):
+        ANTIBIOTIC_CODES = []
+        ANTIBIOTIC_FULL_NAME = []
+        ANTIBIOTIC_NAME_ = []
+        ANTIBIOTIC_GUIDELINES = []
+        ANTIBIOTIC_TEST = []
+        antibiotics_count = self.ui.antibiotic_local_list.count()
+        if antibiotics_count == 0:
+            QMessageBox.warning(self, "Warning", "No antibiotics selected", QMessageBox.Ok)
+            return
+        else:
+            for index in range(self.ui.antibiotic_local_list.count()):
+                item = self.ui.antibiotic_local_list.item(index)
+                ANTIBIOTIC_CODES.append(item.data(ANTIBIOTIC_CODE_ROLE))
+                ANTIBIOTIC_FULL_NAME.append(item.data(ANTIBIOTIC_FULL_NAME_ROLE))
+                ANTIBIOTIC_NAME_.append(item.data(ANTIBIOTIC_NAME_ROLE))
+                ANTIBIOTIC_GUIDELINES.append(item.data(ANTIBIOTIC_GUIDELINES_ROLE))
+                ANTIBIOTIC_TEST.append(item.data(ANTIBIOTIC_TEST_ROLE))
+
+        data = {
+            "ANTIBIOTIC_CODES": ANTIBIOTIC_CODES,
+            "ANTIBIOTIC_FULL_NAME": ANTIBIOTIC_FULL_NAME,
+            "ANTIBIOTIC_NAME_": ANTIBIOTIC_NAME_,
+            "ANTIBIOTIC_GUIDELINES": ANTIBIOTIC_GUIDELINES,
+            "ANTIBIOTIC_TEST": ANTIBIOTIC_TEST
+        }
+
+        df = pd.DataFrame(data)
+        breakpoint_dialog = BreakpointDialog(data=df)
+        breakpoint_dialog.exec()
