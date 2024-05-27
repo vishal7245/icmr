@@ -88,59 +88,6 @@
     <string>To add additional species or antibiotics, select 'Add''.</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="breakpoint_organism_linedit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>110</y>
-     <width>261</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="breakpoint_siteofinfection_linedit">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>110</y>
-     <width>191</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="breakpoint_antibiotic_lineedit">
-   <property name="geometry">
-    <rect>
-     <x>490</x>
-     <y>110</y>
-     <width>211</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="breakpoint_testmethod_lineedit">
-   <property name="geometry">
-    <rect>
-     <x>710</x>
-     <y>110</y>
-     <width>171</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="breakpoint_type_edit">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>110</y>
-     <width>171</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
@@ -206,7 +153,7 @@
     <string>Breakpoint type </string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>840</x>
@@ -231,6 +178,56 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QComboBox" name="breakpoint_organism_combobox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>261</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="breakpoint_siteofinfection_combobox">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>110</y>
+     <width>191</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="breakpoint_antibiotic_combobox">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>110</y>
+     <width>211</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="breakpoint_testmethod_combobox">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>110</y>
+     <width>171</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="breakpoint_type_combobox">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>110</y>
+     <width>171</width>
+     <height>24</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

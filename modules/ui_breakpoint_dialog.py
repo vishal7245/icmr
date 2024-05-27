@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QHBoxLayout,
+    QHeaderView, QLabel, QPushButton, QSizePolicy,
     QTableWidget, QTableWidgetItem, QWidget)
 
 class Ui_Dialog(object):
@@ -52,21 +52,6 @@ class Ui_Dialog(object):
         self.label_3 = QLabel(Dialog)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(20, 50, 751, 16))
-        self.breakpoint_organism_linedit = QLineEdit(Dialog)
-        self.breakpoint_organism_linedit.setObjectName(u"breakpoint_organism_linedit")
-        self.breakpoint_organism_linedit.setGeometry(QRect(20, 110, 261, 23))
-        self.breakpoint_siteofinfection_linedit = QLineEdit(Dialog)
-        self.breakpoint_siteofinfection_linedit.setObjectName(u"breakpoint_siteofinfection_linedit")
-        self.breakpoint_siteofinfection_linedit.setGeometry(QRect(290, 110, 191, 23))
-        self.breakpoint_antibiotic_lineedit = QLineEdit(Dialog)
-        self.breakpoint_antibiotic_lineedit.setObjectName(u"breakpoint_antibiotic_lineedit")
-        self.breakpoint_antibiotic_lineedit.setGeometry(QRect(490, 110, 211, 23))
-        self.breakpoint_testmethod_lineedit = QLineEdit(Dialog)
-        self.breakpoint_testmethod_lineedit.setObjectName(u"breakpoint_testmethod_lineedit")
-        self.breakpoint_testmethod_lineedit.setGeometry(QRect(710, 110, 171, 23))
-        self.breakpoint_type_edit = QLineEdit(Dialog)
-        self.breakpoint_type_edit.setObjectName(u"breakpoint_type_edit")
-        self.breakpoint_type_edit.setGeometry(QRect(890, 110, 171, 23))
         self.label_4 = QLabel(Dialog)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(20, 90, 131, 16))
@@ -82,22 +67,37 @@ class Ui_Dialog(object):
         self.label_8 = QLabel(Dialog)
         self.label_8.setObjectName(u"label_8")
         self.label_8.setGeometry(QRect(890, 90, 131, 16))
-        self.widget = QWidget(Dialog)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(840, 680, 221, 26))
-        self.horizontalLayout = QHBoxLayout(self.widget)
+        self.layoutWidget1 = QWidget(Dialog)
+        self.layoutWidget1.setObjectName(u"layoutWidget1")
+        self.layoutWidget1.setGeometry(QRect(840, 680, 221, 26))
+        self.horizontalLayout = QHBoxLayout(self.layoutWidget1)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.breakpoint_ok_button = QPushButton(self.widget)
+        self.breakpoint_ok_button = QPushButton(self.layoutWidget1)
         self.breakpoint_ok_button.setObjectName(u"breakpoint_ok_button")
 
         self.horizontalLayout.addWidget(self.breakpoint_ok_button)
 
-        self.breakpoint_cancel_button = QPushButton(self.widget)
+        self.breakpoint_cancel_button = QPushButton(self.layoutWidget1)
         self.breakpoint_cancel_button.setObjectName(u"breakpoint_cancel_button")
 
         self.horizontalLayout.addWidget(self.breakpoint_cancel_button)
 
+        self.breakpoint_organism_combobox = QComboBox(Dialog)
+        self.breakpoint_organism_combobox.setObjectName(u"breakpoint_organism_combobox")
+        self.breakpoint_organism_combobox.setGeometry(QRect(20, 110, 261, 24))
+        self.breakpoint_siteofinfection_combobox = QComboBox(Dialog)
+        self.breakpoint_siteofinfection_combobox.setObjectName(u"breakpoint_siteofinfection_combobox")
+        self.breakpoint_siteofinfection_combobox.setGeometry(QRect(290, 110, 191, 24))
+        self.breakpoint_antibiotic_combobox = QComboBox(Dialog)
+        self.breakpoint_antibiotic_combobox.setObjectName(u"breakpoint_antibiotic_combobox")
+        self.breakpoint_antibiotic_combobox.setGeometry(QRect(490, 110, 211, 24))
+        self.breakpoint_testmethod_combobox = QComboBox(Dialog)
+        self.breakpoint_testmethod_combobox.setObjectName(u"breakpoint_testmethod_combobox")
+        self.breakpoint_testmethod_combobox.setGeometry(QRect(710, 110, 171, 24))
+        self.breakpoint_type_combobox = QComboBox(Dialog)
+        self.breakpoint_type_combobox.setObjectName(u"breakpoint_type_combobox")
+        self.breakpoint_type_combobox.setGeometry(QRect(890, 110, 171, 24))
 
         self.retranslateUi(Dialog)
 
@@ -111,7 +111,6 @@ class Ui_Dialog(object):
         self.label.setText(QCoreApplication.translate("Dialog", u"Compare the breakpoints defined by antimirobial susceptibility guidelines to the breakpoints used in your laboratory.", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Make any necessary changes.", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"To add additional species or antibiotics, select 'Add''.", None))
-        self.breakpoint_antibiotic_lineedit.setText("")
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Organism", None))
         self.label_5.setText(QCoreApplication.translate("Dialog", u"Site of infection", None))
         self.label_6.setText(QCoreApplication.translate("Dialog", u"Antibiotic", None))
