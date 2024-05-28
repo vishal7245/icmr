@@ -3,6 +3,7 @@ import re
 from PySide6.QtWidgets import QDialog, QHeaderView, QTableWidgetItem
 from modules.ui_breakpoint_dialog import Ui_Dialog
 import pandas as pd
+from components.new_breakpoint_dialog import NewBreakpointDialog
 
 class BreakpointDialog(QDialog):
     def __init__(self, data):
@@ -10,6 +11,7 @@ class BreakpointDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle("Breakpoints")
+        self.setFixedSize(1080, 720)
         self.data = data
         self.breakpoint_data = self.fetch_breakpoints()
 
@@ -31,6 +33,8 @@ class BreakpointDialog(QDialog):
         self.ui.breakpoint_antibiotic_combobox.currentIndexChanged.connect(self.filter_breakpoint_table)
         self.ui.breakpoint_testmethod_combobox.currentIndexChanged.connect(self.filter_breakpoint_table)
         self.ui.breakpoint_type_combobox.currentIndexChanged.connect(self.filter_breakpoint_table)
+        self.ui.breakpoint_add_button.clicked.connect(self.new_breakpoint)
+        self.ui.breakpoint_delete_button.clicked.connect(self.delete_breakpoint)
 
         # Breakpoint table setup
         self.ui.breakpoint_table.setColumnCount(10)
@@ -138,3 +142,32 @@ class BreakpointDialog(QDialog):
         if breakpoint_type != "All":
             filtered_data = filtered_data[filtered_data['BREAKPOINT_TYPE'] == breakpoint_type].reset_index(drop=True)
         self.populate_breakpoint_table(filtered_data)
+
+    def new_breakpoint(self):
+        new_breakpoint_dialog = NewBreakpointDialog(self.data)
+        new_breakpoint_dialog.data_accepted.connect(self.handle_new_breakpoint_data)
+        new_breakpoint_dialog.exec()
+
+    def delete_breakpoint(self):
+        selected_row = self.ui.breakpoint_table.currentRow()
+        self.ui.breakpoint_table.removeRow(selected_row)
+
+    def handle_new_breakpoint_data(self, antibiotic, organism, organism_code):
+        print(f"Selected Antibiotic: {antibiotic}")
+        print(f"Selected Organism: {organism}")
+        print(f"Organism Code: {organism_code}")
+
+        row_count = self.ui.breakpoint_table.rowCount()
+        self.ui.breakpoint_table.insertRow(row_count)
+
+        self.ui.breakpoint_table.setItem(row_count, 0, self.create_table_item(organism))  # Organism
+        self.ui.breakpoint_table.setItem(row_count, 1, self.create_table_item(organism_code))  # Organism Code
+        self.ui.breakpoint_table.setItem(row_count, 5, self.create_table_item(antibiotic))  # Antibiotic
+
+        # Leave the remaining columns empty
+        for column in [2, 3, 4, 6, 7, 8, 9]:
+            self.ui.breakpoint_table.setItem(row_count, column, self.create_table_item(""))
+        
+        self.ui.breakpoint_table.selectRow(row_count)
+
+        self.ui.breakpoint_table.scrollToBottom()

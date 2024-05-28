@@ -1,0 +1,11 @@
+ORGANISM_CODE,ORGANISM
+GM+,All Gram-positive organisms
+GM-,All Gram-negative organisms
+EBC,All Enterobacterales
+NFR,All non-fermenting gram negative rods
+ANA,Anaerobes
+AN-,"Anaerobes, Gram negative"
+AN+,"Anaerobes, Gram positive"
+ECO,All Escherichia coli
+XXX,No growth and negative results
+AC-,Acinetobacter sp. 
