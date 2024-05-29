@@ -11,9 +11,9 @@ from modules.ui_lab_dialog import Ui_Dialog
 class LabDialog(QDialog):
     def __init__(self):
         super(LabDialog, self).__init__()
-        self.setWindowTitle("Laboratories")
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.setWindowTitle("Laboratories")
         self.ui.tableWidget.setColumnCount(4)
         self.ui.tableWidget.setHorizontalHeaderLabels(["Country Code", "Laboratory Code","File Name","Lab Name"])
         self.ui.tableWidget.verticalHeader().setVisible(False)

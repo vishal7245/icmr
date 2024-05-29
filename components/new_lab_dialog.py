@@ -4,6 +4,7 @@ from modules.ui_new_lab_dialog import Ui_Dialog
 from components.breakpoint_dialog import BreakpointDialog
 from PySide6.QtCore import Qt
 import pandas as pd
+from io import StringIO
 
 # custom roles
 ANTIBIOTIC_CODE_ROLE = Qt.UserRole + 1
@@ -307,4 +308,10 @@ class NewLabDialog(QDialog):
 
         df = pd.DataFrame(data)
         breakpoint_dialog = BreakpointDialog(data=df)
+        breakpoint_dialog.data_frame_signal.connect(self.handle_breakpoint_data)
         breakpoint_dialog.exec()
+
+    def handle_breakpoint_data(self, data):
+        df = pd.read_csv(StringIO(data))
+        self.breakpoint_dataframe = df
+        print(self.breakpoint_dataframe.head())

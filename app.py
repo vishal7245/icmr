@@ -9,6 +9,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = ui_mainwindow.Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowTitle("MicroTrack")
         self.create_data_directory()
         self.show()
         self.showMaximized()

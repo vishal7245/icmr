@@ -1,11 +1,15 @@
 import csv
 import re
 from PySide6.QtWidgets import QDialog, QHeaderView, QTableWidgetItem
+from PySide6.QtCore import Qt, Signal
 from modules.ui_breakpoint_dialog import Ui_Dialog
 import pandas as pd
 from components.new_breakpoint_dialog import NewBreakpointDialog
 
 class BreakpointDialog(QDialog):
+
+    data_frame_signal = Signal(str)
+
     def __init__(self, data):
         super(BreakpointDialog, self).__init__()
         self.ui = Ui_Dialog()
@@ -35,6 +39,7 @@ class BreakpointDialog(QDialog):
         self.ui.breakpoint_type_combobox.currentIndexChanged.connect(self.filter_breakpoint_table)
         self.ui.breakpoint_add_button.clicked.connect(self.new_breakpoint)
         self.ui.breakpoint_delete_button.clicked.connect(self.delete_breakpoint)
+        self.ui.breakpoint_ok_button.clicked.connect(self.accept_data)
 
         # Breakpoint table setup
         self.ui.breakpoint_table.setColumnCount(10)
@@ -153,10 +158,6 @@ class BreakpointDialog(QDialog):
         self.ui.breakpoint_table.removeRow(selected_row)
 
     def handle_new_breakpoint_data(self, antibiotic, organism, organism_code):
-        print(f"Selected Antibiotic: {antibiotic}")
-        print(f"Selected Organism: {organism}")
-        print(f"Organism Code: {organism_code}")
-
         row_count = self.ui.breakpoint_table.rowCount()
         self.ui.breakpoint_table.insertRow(row_count)
 
@@ -171,3 +172,19 @@ class BreakpointDialog(QDialog):
         self.ui.breakpoint_table.selectRow(row_count)
 
         self.ui.breakpoint_table.scrollToBottom()
+
+
+    def accept_data(self):
+        # logic to store breakpoint_table data in a dataframe
+        headers = [self.ui.breakpoint_table.horizontalHeaderItem(i).text() for i in range(self.ui.breakpoint_table.columnCount())]
+        data = []
+
+        for row in range(self.ui.breakpoint_table.rowCount()):
+            row_data = [self.ui.breakpoint_table.item(row, col).text() if self.ui.breakpoint_table.item(row, col) else '' for col in range(self.ui.breakpoint_table.columnCount())]
+            data.append(row_data)
+
+        df = pd.DataFrame(data, columns=headers)
+        csv_data = df.to_csv(index=False)
+
+        self.data_frame_signal.emit(csv_data)
+        self.accept()
