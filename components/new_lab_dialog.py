@@ -2,6 +2,8 @@ import sys, csv, re
 from PySide6.QtWidgets import QDialog, QAbstractItemView, QListWidgetItem, QMessageBox, QHeaderView, QTableWidgetItem
 from modules.ui_new_lab_dialog import Ui_Dialog
 from components.breakpoint_dialog import BreakpointDialog
+from components.new_datafield_dialog import NewDataFieldDialog
+from components.encryption_dialog import EncryptionDialog
 from PySide6.QtCore import Qt
 import pandas as pd
 from io import StringIO
@@ -20,6 +22,14 @@ DEPARTMENT_NAME_ROLE = Qt.UserRole + 2
 LOCATION_TYPE_CODE_ROLE = Qt.UserRole + 1
 LOCATION_TYPE_NAME_ROLE = Qt.UserRole + 2
 
+
+FIELD_NAME_ROLE = Qt.UserRole + 1
+FIELD_LENGTH_ROLE = Qt.UserRole + 2
+FIELD_TYPE_ROLE = Qt.UserRole + 3
+FIELD_DESCRIPTION_ROLE = Qt.UserRole + 4
+FIELD_SECTION_ROLE = Qt.UserRole + 5
+FIELD_ENCRYPTION_ROLE = Qt.UserRole + 6
+
 class NewLabDialog(QDialog):
     def __init__(self):
         super(NewLabDialog, self).__init__()
@@ -29,9 +39,14 @@ class NewLabDialog(QDialog):
         self.populate_antibiotic_list()
         self.populate_departments()
         self.populate_location_type()
+        self.populate_datafields()
+        self.update_num_datafields()
+        self.datafield_item_to_df()
+
 
         self.ui.tabWidget.setCurrentIndex(0)
         self.setFixedSize(1080, 600)
+        self.setWindowFlags(self.windowFlags() | Qt.Tool)
         self.setWindowTitle("New Laboratory")
 
         # Form Components
@@ -56,6 +71,12 @@ class NewLabDialog(QDialog):
         header.setSectionResizeMode(3, QHeaderView.Stretch)
         header.setSectionResizeMode(4, QHeaderView.Stretch)
 
+        # Data Fields Summary Default Value
+        self.ui.data_fields_description.setText("")
+        self.ui.data_fields_name.setText("")
+        self.ui.data_fields_len_spinbox.setValue(0)
+        self.ui.data_fields_type.setText("")
+
         # Connecting Signals
         self.ui.general_country_combobox.currentIndexChanged.connect(self.update_country_info)
         self.ui.general_labcode_lineedit.textChanged.connect(self.update_configuration_label)
@@ -76,6 +97,14 @@ class NewLabDialog(QDialog):
         self.ui.location_type_listview.itemClicked.connect(self.update_location_type)
         self.ui.location_table_list.cellChanged.connect(self.select_row_on_edit)
         self.ui.antibiotics_breakpoint_button.clicked.connect(self.open_breakpoint_dialog)
+        self.ui.data_fields_list.itemSelectionChanged.connect(self.update_num_datafields)
+        self.ui.data_fields_list.itemSelectionChanged.connect(self.update_field_labels)
+        self.ui.general_human_radio.clicked.connect(self.populate_datafields)
+        self.ui.general_combined_radio.clicked.connect(self.populate_datafields)
+        self.ui.general_human_radio.clicked.connect(self.update_num_datafields)
+        self.ui.general_combined_radio.clicked.connect(self.update_num_datafields)
+        self.ui.data_fields_modify_button.clicked.connect(self.open_modify_list)
+        self.ui.encryption_button.clicked.connect(self.open_encryption_dialog)
 
         # Store original antibiotics
         self.original_antibiotics = []
@@ -314,4 +343,103 @@ class NewLabDialog(QDialog):
     def handle_breakpoint_data(self, data):
         df = pd.read_csv(StringIO(data))
         self.breakpoint_dataframe = df
-        print(self.breakpoint_dataframe.head())
+
+    
+    def populate_datafields(self):
+        self.ui.data_fields_list.clear()
+        default_row = 5
+        with open("data/FIELDLST.csv", newline="") as fieldcsv:
+            reader = csv.reader(fieldcsv, delimiter='\t')
+            next(reader)
+            if self.ui.general_human_radio.isChecked():
+                default_row = 5
+            elif self.ui.general_combined_radio.isChecked():
+                default_row = 6
+            for row in reader:
+                if row[default_row] == "1":
+                    item = QListWidgetItem()
+                    item.setData(FIELD_NAME_ROLE, row[1])
+                    item.setData(FIELD_LENGTH_ROLE, row[2])
+                    item.setData(FIELD_TYPE_ROLE, row[3])
+                    item.setData(FIELD_DESCRIPTION_ROLE, row[0])
+                    item.setData(FIELD_SECTION_ROLE, row[4])
+                    item.setData(FIELD_ENCRYPTION_ROLE, row[7])
+                    item.setText(row[0])
+                    self.ui.data_fields_list.addItem(item)
+
+
+    def update_num_datafields(self):
+        num_datafields = self.ui.data_fields_list.count()
+        self.ui.num_data_fields.setText(str(num_datafields))
+
+    def update_field_labels(self):
+        selected_item = self.ui.data_fields_list.currentItem()
+        if selected_item:
+            self.ui.data_fields_description.setText(selected_item.data(FIELD_DESCRIPTION_ROLE))
+            self.ui.data_fields_name.setText(selected_item.data(FIELD_NAME_ROLE))
+            self.ui.data_fields_len_spinbox.setValue(int(selected_item.data(FIELD_LENGTH_ROLE)))
+            self.ui.data_fields_type.setText(selected_item.data(FIELD_TYPE_ROLE))
+
+    def datafield_item_to_df(self):
+        FIELD_LENGTH = []
+        FIELD_DESCRIPTION = []
+        FIELD_NAME = []
+        FIELD_TYPE = []
+        FIELD_SECTION = []
+        FIELD_ENCRYPTION = []
+
+        for index in range(self.ui.data_fields_list.count()):
+            item = self.ui.data_fields_list.item(index)
+            FIELD_LENGTH.append(item.data(FIELD_LENGTH_ROLE))
+            FIELD_DESCRIPTION.append(item.data(FIELD_DESCRIPTION_ROLE))
+            FIELD_NAME.append(item.data(FIELD_NAME_ROLE))
+            FIELD_TYPE.append(item.data(FIELD_TYPE_ROLE))
+            FIELD_SECTION.append(item.data(FIELD_SECTION_ROLE))
+            FIELD_ENCRYPTION.append(item.data(FIELD_ENCRYPTION_ROLE))
+
+        field_data = {
+            "FIELD_LENGTH": FIELD_LENGTH,
+            "FIELD_DESCRIPTION": FIELD_DESCRIPTION,
+            "FIELD_NAME": FIELD_NAME,
+            "FIELD_TYPE": FIELD_TYPE,
+            "FIELD_SECTION": FIELD_SECTION,
+            "FIELD_ENCRYPTION": FIELD_ENCRYPTION
+        }
+        self.datafield_df = pd.DataFrame(field_data)
+    
+    def update_datafield_list(self, data):
+        self.ui.data_fields_list.clear()
+        for index, row in data.iterrows():
+            item = QListWidgetItem()
+            item.setData(FIELD_NAME_ROLE, row["FIELD_NAME"])
+            item.setData(FIELD_LENGTH_ROLE, row["FIELD_LENGTH"])
+            item.setData(FIELD_TYPE_ROLE, row["FIELD_TYPE"])
+            item.setData(FIELD_DESCRIPTION_ROLE, row["FIELD_DESCRIPTION"])
+            item.setData(FIELD_SECTION_ROLE, row["FIELD_SECTION"])
+            item.setData(FIELD_ENCRYPTION_ROLE, row["FIELD_ENCRYPTION"])
+            item.setText(row["FIELD_DESCRIPTION"])
+            self.ui.data_fields_list.addItem(item)
+
+        
+    
+    def open_modify_list(self):
+        modify_list_dialog = NewDataFieldDialog(self.datafield_df)
+        modify_list_dialog.data_frame_signal.connect(self.handle_datafield_data)
+        modify_list_dialog.exec()
+
+    def handle_datafield_data(self, data):
+        df = pd.read_csv(StringIO(data))
+        self.datafield_df = df
+        self.update_datafield_list(df)
+
+
+    def open_encryption_dialog(self):
+        encryption_dialog = EncryptionDialog(self.datafield_df)
+        encryption_dialog.data_frame_signal.connect(self.handle_encryption_data)
+        encryption_dialog.exec()
+
+    def handle_encryption_data(self, data):
+        self.datafield_df = pd.read_csv(StringIO(data))
+        self.update_datafield_list(self.datafield_df)
+        print(self.datafield_df)
+

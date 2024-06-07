@@ -1,0 +1,379 @@
+FIELD_DESC	FIELD_NAME	FLD_LENGTH	FIELD_TYPE	SECTION	DEFAULT	ANIMAL_DEFAULT	ENCRYPTION_DEFAULT
+Country	COUNTRY_A	3	TEXT	Hidden	1	1	0
+Laboratory	LABORATORY	10	TEXT	Hidden	1	1	0
+Origin	ORIGIN	1	TEXT	Hidden	1	1	0
+Identification number	PATIENT_ID	30	TEXT	Origin	1	1	1
+Last name	LAST_NAME	30	TEXT	Origin	1	1	1
+First name	FIRST_NAME	20	TEXT	Origin	1	1	1
+Sex	SEX	1	TEXT	Origin	1	1	0
+Date of birth	DATE_BIRTH	8	DATE	Origin	1	1	0
+Age	AGE	3	TEXT	Origin	1	1	0
+Age category	PAT_TYPE	3	TEXT	Origin	1	1	0
+Location	WARD	20	TEXT	Location	1	1	0
+Institution	INSTITUT	10	TEXT	Location	1	1	0
+Department	DEPARTMENT	15	TEXT	Location	1	1	0
+Location type	WARD_TYPE	3	TEXT	Location	1	1	0
+Healthcare facility type	HCF_TYPE	10	TEXT	Location	0	0	0
+Date of admission	DATE_ADMIS	8	DATE	Location	1	1	0
+Specimen number	SPEC_NUM	12	TEXT	Specimen	1	1	0
+Specimen date	SPEC_DATE	8	DATE	Specimen	1	1	0
+Specimen type	SPEC_TYPE	15	TEXT	Specimen	1	1	0
+Specimen type (Numeric)	SPEC_CODE	3	TEXT	Hidden	1	1	0
+Reason	SPEC_REAS	3	TEXT	Specimen	1	1	0
+Isolate number	ISOL_NUM	10	TEXT	Hidden	1	1	0
+Organism	ORGANISM	3	TEXT	Microbiology	1	1	0
+Organism type	ORG_TYPE	1	TEXT	Hidden	1	1	0
+Serotype	SEROTYPE	40	TEXT	Microbiology	1	1	0
+Beta-lactamase	BETA_LACT	1	TEXT	Microbiology	1	1	0
+ESBL	ESBL	1	TEXT	Microbiology	1	1	0
+Carbapenem resistance	CARBAPENEM	1	TEXT	Microbiology	1	1	0
+MRSA	MRSA	1	TEXT	Microbiology	1	1	0
+Inducible clindamycin resistance	INDUC_CLI	1	TEXT	Microbiology	1	1	0
+Comment	COMMENT	30	TEXT	Other	1	1	0
+Date of data entry	DATE_DATA	8	DATE	Hidden	1	1	0
+Race	RACE	5	TEXT	Origin	0	0	0
+Ethnicity	ETHNICITY	5	TEXT	Origin	0	0	0
+Date of death	DATE_DEATH	8	DATE	Origin	0	0	0
+Time of death	TIME_DEATH	5	TEXT	Origin	0	0	0
+Death	DEATH	1	TEXT	Origin	0	0	0
+Patient street	STREET	30	TEXT	Origin	0	0	0
+Patient street-2	STREET2	30	TEXT	Origin	0	0	0
+Patient city	CITY	30	TEXT	Origin	0	0	0
+Patient state	STATE	20	TEXT	Origin	0	0	0
+Patient phone	PHONE	20	TEXT	Origin	0	0	0
+Patient county	COUNTY	30	TEXT	Origin	0	0	0
+Patient class	PT_CLASS	5	TEXT	Origin	0	0	0
+Admission type	ADM_TYPE	5	TEXT	Location	0	0	0
+Report date	DATE_REPRT	8	DATE	Microbiology	0	0	0
+Report time	TIME_REPRT	5	TEXT	Microbiology	0	0	0
+Report status	REPRT_STAT	5	TEXT	Microbiology	0	0	0
+Specimen site	SPEC_SITE	30	TEXT	Specimen	0	0	0
+Order MD First name	O_MD_FIRST	20	TEXT	Other	0	0	0
+Order MD Middle name	O_MD_MID	20	TEXT	Other	0	0	0
+Order MD Last name	O_MD_LAST	30	TEXT	Other	0	0	0
+Order MD Degree	O_MD_DEGR	5	TEXT	Other	0	0	0
+Order MD Street	O_MDSTREET	30	TEXT	Other	0	0	0
+Order MD Street-2	O_MDSTRET2	30	TEXT	Other	0	0	0
+Order MD City	O_MDCITY	30	TEXT	Other	0	0	0
+Order MD State	O_MDSTATE	20	TEXT	Other	0	0	0
+Order MD Phone	O_MDPHONE	20	TEXT	Other	0	0	0
+Patient middle name	MID_NAME	20	TEXT	Origin	0	0	0
+ZIp code	ZIP_CODE	10	TEXT	Origin	0	0	0
+Order MD Code	ORDMD_CODE	10	TEXT	Origin	0	0	0
+Order MD email	O_MDEMAIL	30	TEXT	Other	0	0	0
+Specimen time	SPEC_TIME	5	TEXT	Specimen	0	0	0
+Order MD Zip code	O_MD_ZIP	10	TEXT	Other	0	0	0
+Date of discharge	DATE_DISCH	8	DATE	Origin	0	0	0
+Date of operation	DATE_OPER	8	DATE	Origin	0	0	0
+Date of ward admission	DATE_WARD	8	DATE	Location	0	0	0
+Diagnosis	DIAGNOSIS	30	TEXT	Origin	0	0	0
+Operation	OPERATION	30	TEXT	Origin	0	0	0
+Clinical outcome	CLNOUTCOME	30	TEXT	Origin	0	0	0
+Physician	PHYSICIAN	30	TEXT	Origin	0	0	0
+Prior antibiotic therapy	PRIOR_ABX	30	TEXT	Origin	0	0	0
+Response to treatment	RESP_TO_TX	30	TEXT	Origin	0	0	0
+Surgeon	SURGEON	30	TEXT	Origin	0	0	0
+Bacteremia	BACTEREMIA	30	TEXT	Origin	0	0	0
+Central catheter	CENT_CATH	30	TEXT	Origin	0	0	0
+Urine catheter	URINE_CATH	30	TEXT	Origin	0	0	0
+Ventilator	VENTILATOR	30	TEXT	Origin	0	0	0
+Nosocomial infection	NOSOCOMIAL	30	TEXT	Origin	0	0	0
+Peripheral catheter	PERI_CATH	30	TEXT	Origin	0	0	0
+Pneumonia	PNEUMONIA	30	TEXT	Origin	0	0	0
+Surgical site infection	SSI	30	TEXT	Origin	0	0	0
+Urinary tract infection	UTI	30	TEXT	Origin	0	0	0
+NHSN Location code	NHSN_LOC	6	TEXT	Location	0	0	0
+NHSN Specimen code	NHSN_SPEC	6	TEXT	Specimen	0	0	0
+MRSA screening test	MRSA_SCRN	1	TEXT	Microbiology	0	0	0
+VRE	VRE	1	TEXT	Microbiology	0	0	0
+Ethnic group	ETHNIC	30	TEXT	Origin	0	0	0
+Full name	FULL_NAME	30	TEXT	Origin	0	0	0
+Island	ISLAND	30	TEXT	Location	0	0	0
+Occupation	OCCUPATION	30	TEXT	Origin	0	0	0
+Patient origin	PAT_ORIGIN	30	TEXT	Origin	0	0	0
+Antibiotic treatment	ABX_CODE	30	TEXT	Origin	0	0	0
+Dosage	ABX_DOSE	30	TEXT	Origin	0	0	0
+Dosing interval	ABX_INTER	30	TEXT	Origin	0	0	0
+End date	ABX_END	8	DATE	Origin	0	0	0
+Route of administration	ABX_ADMIN	30	TEXT	Origin	0	0	0
+Serum concentration	ABX_SERUM	30	TEXT	Origin	0	0	0
+Start date	ABX_START	8	DATE	Origin	0	0	0
+API number	API	7	TEXT	Microbiology	0	0	0
+ESBL Producer	ESBL_PROD	1	TEXT	Microbiology	0	0	0
+Gram stain	GRAM_STAIN	50	TEXT	Microbiology	0	0	0
+H antigens, phase 1	H_PHASE_1	30	TEXT	Microbiology	0	0	0
+H antigens, phase 2	H_PHASE_2	30	TEXT	Microbiology	0	0	0
+Hodge test (modified)	HODGE	1	TEXT	Microbiology	0	0	0
+Local organism code	LOCAL_ORG	50	TEXT	Microbiology	0	0	0
+Microscopy	MICROSCOPY	30	TEXT	Microbiology	0	0	0
+O Antigens	O_ANTIGENS	30	TEXT	Microbiology	0	0	0
+Oxacillin screen plate	OXA_SCREEN	1	TEXT	Microbiology	0	0	0
+PBP2a latex agglutination	PBP2A_AGGL	1	TEXT	Microbiology	0	0	0
+PCR for mecA	MECA_PCR	1	TEXT	Microbiology	0	0	0
+PCR for vanA	VANA_PCR	1	TEXT	Microbiology	0	0	0
+Phage type	PHAGE_TYPE	30	TEXT	Microbiology	0	0	0
+Urine colony count	URINECOUNT	30	TEXT	Microbiology	0	0	0
+Vancomycin screen plate	VAN_SCREEN	1	TEXT	Microbiology	0	0	0
+AmpC production	AMPC	1	TEXT	Microbiology	0	0	0
+Accepting laboratory	ACCEPTLAB	100	TEXT	Microbiology	0	0	0
+Testing section code	TSTSECCODE	100	TEXT	Microbiology	0	0	0
+Testing section	TEST_SECT	100	TEXT	Microbiology	0	0	0
+Date finalized	DATE_FINAL	8	DATE	Specimen	0	0	0
+Date received	DATE_RECVD	8	DATE	Specimen	0	0	0
+Date reported	DATE_RPRTD	8	DATE	Specimen	0	0	0
+Ordering physician	ORDER_MD	8	TEXT	Specimen	0	0	0
+Local specimen code	LOCAL_SPEC	30	TEXT	Specimen	0	0	0
+Samples	SAMPLES	100	TEXT	Specimen	0	0	0
+Sampling plan	SAMP_PLAN	100	TEXT	Specimen	0	0	0
+Sampling purpose	SAMP_PURP	100	TEXT	Specimen	0	0	0
+Storage location	STORAGELOC	30	TEXT	Specimen	0	0	0
+Storage number	STORAGENUM	30	TEXT	Specimen	0	0	0
+NORM Surveillance protocol	NORM_OVERV	8	TEXT	Other	0	0	0
+NORM Postal code	NORM_POST	4	TEXT	Location	0	0	0
+NORM Commune code	NORM_KOMM	4	TEXT	Location	0	0	0
+NORM Laboratory code	NORM_LAB	4	TEXT	Location	0	0	0
+NORM Region of infection	NORM_SMIT	4	TEXT	Location	0	0	0
+NORM Specimen date	NORM_TATT	8	DATE	Specimen	0	0	0
+NORM Specimen location	NORM_LOK	4	TEXT	Specimen	0	0	0
+NORM Organism	NORM_FUNN	4	TEXT	Microbiology	0	0	0
+NV Lactation number	NV_LACTNUM	2	TEXT	Origin	0	0	0
+NV Lactation day	NV_LACTDAY	3	TEXT	Origin	0	0	0
+NV Type of inflammation	NV_INFTYPE	1	TEXT	Origin	0	0	0
+NV Duration of disease	NV_DISDUR	1	TEXT	Origin	0	0	0
+NV Prior therapy	NV_THERAPY	1	TEXT	Origin	0	0	0
+NV Age of mother	NV_AGEMOM	2	TEXT	Origin	0	0	0
+NV Anatomical site	NV_ANATOM	10	TEXT	Specimen	0	0	0
+NV Sample preparation	NV_SAMPREP	10	TEXT	Specimen	0	0	0
+NV Examination date	NV_EXMDATE	8	DATE	Specimen	0	0	0
+EARSS Hospital code	EARSS_HOSP	4	TEXT	Location	0	0	0
+EARSS Patient origin	EARSS_ORIG	1	TEXT	Location	0	0	0
+EARSS PCR for mecA	EARSS_MECA	1	TEXT	Microbiology	0	0	0
+EARSS PBP2a agglutination	EARSS_PBP2	1	TEXT	Microbiology	0	0	0
+Infección intrahospitalaria	X_INF	1	TEXT	Origin	0	0	0
+Diagnóstico	X_DIAG	7	TEXT	Origin	0	0	0
+Factor de riesgo	X_RIESGO	4	TEXT	Origin	0	0	0
+Enfermedad de base	X_ENFBASE	4	TEXT	Origin	0	0	0
+MLS	X_MLS	1	TEXT	Microbiology	0	0	0
+BLEE-Argentina	X_BLEE	1	TEXT	Hidden	0	0	0
+Screening de oxacilina	X_SCO	1	TEXT	Microbiology	0	0	0
+Screening de vancomicina	X_SCV	1	TEXT	Microbiology	0	0	0
+Marca del medio	X_MARCAMH	1	TEXT	Microbiology	0	0	0
+Muestra representativa	X_MUESTREP	1	TEXT	Microbiology	0	0	0
+Metalo-betalactamasa	X_MBL	1	TEXT	Microbiology	0	0	0
+R enzimática	X_ACTENZ	1	TEXT	Microbiology	0	0	0
+Huevo IPM-CAZ	X_IMPCAZ	1	TEXT	Microbiology	0	0	0
+Serin-carbapenemasa	X_SCP	1	TEXT	Microbiology	0	0	0
+SIVILA	SIVILA	1	TEXT	Microbiology	0	0	0
+Laboratory name	AFRO_LAB	50	TEXT	Location	0	0	0
+District	AFRO_DISTR	30	TEXT	Location	0	0	0
+Biosafety level	AFRO_LEVEL	2	TEXT	Location	0	0	0
+Epid No.	AFRO_EPID	2	TEXT	Origin	0	0	0
+Suspected disease	AFRO_DISEA	20	TEXT	Origin	0	0	0
+Transport medium	AFRO_TRANS	25	TEXT	Specimen	0	0	0
+Date sent to ref. lab.	AFRO_RRLAB	8	DATE	Specimen	0	0	0
+Date received in ref. lab.	AFRO_RECEP	8	DATE	Specimen	0	0	0
+Date results to the district	AFRO_RESLT	8	DATE	Specimen	0	0	0
+Condition of specimen	AFRO_QUAL	15	TEXT	Specimen	0	0	0
+Macroscopic appearance	AFRO_MACRO	25	TEXT	Specimen	0	0	0
+Leucocytes	AFRO_LEUCO	3	TEXT	Microscopy	0	0	0
+Red blood cells	AFRO_RBC	3	TEXT	Microscopy	0	0	0
+Yeast	AFRO_LEVUR	3	TEXT	Microscopy	0	0	0
+Parasites	AFRO_PARAS	20	TEXT	Microscopy	0	0	0
+PMN%	AFRO_PNN	3	TEXT	Microscopy	0	0	0
+Lymphocytes%	AFRO_L	3	TEXT	Microscopy	0	0	0
+Monocytes%	AFRO_MONOC	3	TEXT	Microscopy	0	0	0
+Other%	AFRO_OTHER	3	TEXT	Microscopy	0	0	0
+Gram stain	AFRO_GRAM	40	TEXT	Microscopy	0	0	0
+India ink	AFRO_ENCRE	30	TEXT	Microscopy	0	0	0
+Ziehl Neelsen	AFRO_ZIEHL	20	TEXT	Microscopy	0	0	0
+Latex agglutination	AFRO_LATEX	25	TEXT	Microbiology	0	0	0
+Culture medium	AFRO_CULTM	25	TEXT	Microbiology	0	0	0
+Animal type	ANIM_TYPE	10	TEXT	Origin	0	1	0
+Brand	BRAND	10	TEXT	Origin	0	1	0
+Breed	BREED	10	TEXT	Origin	0	0	0
+Dip tank	DIP_TANK	10	TEXT	Location	0	0	0
+Expiration date	DATE_EXPIR	8	DATE	Origin	0	0	0
+Farm number	FARM_NUM	10	TEXT	Origin	0	0	0
+Food	FOOD	15	TEXT	Origin	0	1	0
+Market category	MARKET_CAT	3	TEXT	Origin	0	1	0
+Province	PROVINCE	10	TEXT	Origin	0	0	0
+Sex category	SEX_CATEG	3	TEXT	Origin	0	0	0
+Animal species	SPECIES	10	TEXT	Origin	0	1	0
+BLNAR	BLNAR	1	TEXT	Microbiology	0	0	0
+Specific_host	SPEC_HOST	20	TEXT	Origin	0	0	0
+Isolation_source	ISOLSOURCE	20	TEXT	Origin	0	0	0
+Host-disease	HOST_DIS	20	TEXT	Origin	0	0	0
+NCBI_Sample_name	NCBI_SAMP	20	TEXT	Origin	0	0	0
+NCBI_Strain	NCBI_STRAI	20	TEXT	Origin	0	0	0
+Geo_loc_name	GEO_LOC	20	TEXT	Location	0	0	0
+lat_lon	GEO_LATLON	20	TEXT	Location	0	0	0
+Collected by	COLL_BY	20	TEXT	Specimen	0	0	0
+host_subject_id	HOST_ID	20	TEXT	Origin	0	0	0
+lab_host	LAB_HOST	20	TEXT	Origin	0	0	0
+passage_history	PASS_HIST	20	TEXT	Origin	0	0	0
+culture_collection	COLLECTION	20	TEXT	Origin	0	0	0
+AST_vendor	AST_VEND	20	TEXT	Microbiology	0	0	0
+AST_platform	AST_PLAT	20	TEXT	Microbiology	0	0	0
+AST_reagent	AST_REAG	20	TEXT	Microbiology	0	0	0
+Probable contaminant	PROB_CONT	1	TEXT	Origin	0	0	0
+Healthcare-associated	HAI_ASS	10	TEXT	Origin	0	0	0
+Source	SOURCE	8	TEXT	Origin	0	0	0
+Device-associated	DEVICE_ASS	1	TEXT	Origin	0	0	0
+Procedure-associated	PROC_ASS	1	TEXT	Origin	0	0	0
+Neutropenia	NEUTRPENIA	1	TEXT	Origin	0	0	0
+Acquired in ICU	ICU_ACQUIR	1	TEXT	Origin	0	0	0
+30 day outcome	OUTCOME30D	15	TEXT	Origin	0	0	0
+Room	ROOM	6	TEXT	Location	0	0	0
+Project	PROJECT	30	TEXT	Hidden	0	0	0
+CODEX Code	FOOD_CODEX	10	TEXT	Origin	0	0	0
+Local food code	LOCAL_FOOD	10	TEXT	Origin	0	0	0
+Test name	TESTNAME	10	TEXT	Microbiology	0	0	0
+Test result	TESTRESULT	10	TEXT	Microbiology	0	0	0
+Test result-Quantitative	TESTQUANT	10	TEXT	Microbiology	0	0	0
+Infection origin	INF_ORIGIN	3	TEXT	Location	0	0	0
+Fungal identification method	ID_METHOD	3	TEXT	Other	0	0	0
+Fungal identification software version	ID_SOFTWRE	15	TEXT	Other	0	0	0
+Fungal gene for identification	ID_GENE	15	TEXT	Other	0	0	0
+Fungal susceptibility test method	AST_METHOD	4	TEXT	Other	0	0	0
+Row index	ROW_IDX		INTEGER	Hidden	0	0	0
+Type of surveillance	SURV_TYPE	10	TEXT	Origin	0	0	0
+Sampled food	FOOD_TYPE	10	TEXT	Origin	0	0	0
+Veterinarian ID	VETID	15	TEXT	Origin	0	0	0
+Region	REGION	10	TEXT	Location	0	0	0
+District	DISTRICT	10	TEXT	Location	0	0	0
+Commune	COMMUNE	10	TEXT	Location	0	0	0
+Specimen province	SPEC_PROV	10	TEXT	Location	0	0	0
+Specimen district	SPEC_DIST	10	TEXT	Location	0	0	0
+Specimen commune	SPEC_COMM	10	TEXT	Location	0	0	0
+Location ID	LOCATIONID	20	TEXT	Location	0	0	0
+Specimen location ID	SPEC_LOCID	20	TEXT	Location	0	0	0
+Specimen location	SPEC_WARD	20	TEXT	Location	0	0	0
+Specimen location type	SPECWDTYPE	3	TEXT	Location	0	0	0
+Nationality	NATIONALTY	30	TEXT	Origin	0	0	0
+Funding source	FUNDINGSRC	50	TEXT	Origin	0	0	0
+Health status	HEALTH_STS	50	TEXT	Origin	0	0	0
+Client	CLIENT	50	TEXT	Location	0	0	0
+Country of origin	COUNTRYSRC	50	TEXT	Location	0	0	0
+Village	VILLAGE	50	TEXT	Location	0	0	0
+Barn	BARN	20	TEXT	Farm	0	0	0
+Farm size	FARM_SIZE	50	TEXT	Farm	0	0	0
+Farm type	FARM_TYPE	50	TEXT	Farm	0	0	0
+Raising system	RAISINGSYS	50	TEXT	Farm	0	0	0
+Specimen quality	SPEC_QUAL	50	TEXT	Specimen	0	0	0
+Transport conditions to the laboratory	TRANS_COND	50	TEXT	Specimen	0	0	0
+Pooled sampling	POOLEDSMPL	1	TEXT	Specimen	0	0	0
+Number of specimens	NUM_SPECS	50	TEXT	Specimen	0	0	0
+Genotype	GENOTYPE	50	TEXT	Microbiology	0	0	0
+Isolation - Enrichment	ISOENRICH	50	TEXT	Microbiology	0	0	0
+Isolation - Primary medium	ISOPRIMEDI	50	TEXT	Microbiology	0	0	0
+Isolation - Other media	ISOOTHMEDI	50	TEXT	Microbiology	0	0	0
+Isolation - Incubation temperature	ISOINCTEMP	50	TEXT	Microbiology	0	0	0
+Isolation - Other conditions	ISOOTHCOND	50	TEXT	Microbiology	0	0	0
+Antimicrobials - Test date	DATE_AST	8	DATE	Microbiology	0	0	0
+Antimicrobials - Primary medium	ASTPRIMEDI	50	TEXT	Microbiology	0	0	0
+Antimicrobials - Incubation temperature	ASTINCTEMP	50	TEXT	Microbiology	0	0	0
+Antimicrobials - Other conditions	ASTOTHCOND	50	TEXT	Microbiology	0	0	0
+Antimicrobial use	ABX_USE	100	TEXT	Disease	0	0	0
+Suspected disease	DIS_SUSP	50	TEXT	Disease	0	0	0
+Number of animals at risk	NUM_AN_RSK	20	TEXT	Disease	0	0	0
+Number of animals affected	NUM_AN_AFF	20	TEXT	Disease	0	0	0
+Water type	WATER_TYPE	50	TEXT	Location	0	0	0
+Contact email	CONT_EMAIL	100	TEXT	Location	0	0	0
+Contact name	CONT_NAME	50	TEXT	Location	0	0	0
+Contact phone	CONT_PHONE	30	TEXT	Location	0	0	0
+Latitude	LATITUDE	30	TEXT	Location	0	0	0
+Local administrative unit	LOCADMUNIT	50	TEXT	Location	0	0	0
+Local department code	LOCDEPT	50	TEXT	Location	0	0	0
+Local location type code	LOCWARDTYP	50	TEXT	Location	0	0	0
+Longitude	LONGITUDE	30	TEXT	Location	0	0	0
+Specimen location	SPEC_LOC	20	TEXT	Location	0	0	0
+EGASP Identification number	EGASP_ID	10	TEXT	Specimen	0	0	0
+Multiple visits	REPEAT_PT	1	TEXT	Origin	0	0	0
+EGASP Clinic	ID_SITE	15	TEXT	Specimen	0	0	0
+Gender identity	GEND_IDENT	1	TEXT	Origin	0	0	0
+Country of birth	PLACEBIRTH	1	TEXT	Origin	0	0	0
+Discharge - Urethra	DISCHURETH	1	TEXT	Disease	0	0	0
+Discharge - Vagina	DISCHVAGIN	1	TEXT	Disease	0	0	0
+Discharge - Anus	DISCHANAL	1	TEXT	Disease	0	0	0
+Discharge - Throat	DISCHORAL	1	TEXT	Disease	0	0	0
+Discharge - Not specified	DISCHNOTSP	1	TEXT	Disease	0	0	0
+Pain - Intercourse	PAINSEX	1	TEXT	Disease	0	0	0
+Pain - Lower abdominal	PAINABD	1	TEXT	Disease	0	0	0
+Pain - Testes	PAINTESTES	1	TEXT	Disease	0	0	0
+Pain - Urination	PAINURINAT	1	TEXT	Disease	0	0	0
+Pain - Rectum	PAINRECTAL	1	TEXT	Disease	0	0	0
+Pain - Tenesmus	TENESMO	1	TEXT	Disease	0	0	0
+Pain - Anorectal bleeding	ARBLEED	1	TEXT	Disease	0	0	0
+Pain - Sore throat	SOART	1	TEXT	Disease	0	0	0
+Symptoms - Other	SYMPOTH	1	TEXT	Disease	0	0	0
+Symptoms - Other-List	SYMP_SPC	25	TEXT	Disease	0	0	0
+Diagnosis - Other - List	OTHDIAG	25	TEXT	Disease	0	0	0
+Treatment1 - Gonorrhea	TRMT1	1	TEXT	Treatment	0	0	0
+Treatment1 - Other	TRMT1_OTH	25	TEXT	Treatment	0	0	0
+Treatment2 - Dual therapy	TRMT2	1	TEXT	Treatment	0	0	0
+Treatment2 - Other	TRMT2_OTH	25	TEXT	Treatment	0	0	0
+Treatment provided	TRMTOUT	1	TEXT	Treatment	0	0	0
+Treatment outcome	FOL_UP_VIS	1	TEXT	Treatment	0	0	0
+Test of cure	TEST_CURE	1	TEXT	Treatment	0	0	0
+Test of cure 2	TEST_CURE2	1	TEXT	Treatment	0	0	0
+Previous antibiotic use	ABX_USE_2W	1	TEXT	Risk factors	0	0	0
+Previous antibiotic name	ABX_USE_SP	25	TEXT	Risk factors	0	0	0
+Previous travel	TRAVEL_30D	1	TEXT	Risk factors	0	0	0
+Partners - Sex	SEXWITH	1	TEXT	Risk factors	0	0	0
+Partners - Number	SEXPART30D	3	TEXT	Risk factors	0	0	0
+Partners - Nationality	SEXETHN30D	1	TEXT	Risk factors	0	0	0
+Partners - Nationality - List	SEXETHNSPC	25	TEXT	Risk factors	0	0	0
+Sex - Vagina	SEX_VAGINA	1	TEXT	Risk factors	0	0	0
+Sex - Anal receptive	SEX_ANALRE	1	TEXT	Risk factors	0	0	0
+Sex - Anal insertive	SEX_ANALIN	1	TEXT	Risk factors	0	0	0
+Sex - Anal - Not specified	SEX_ANALNS	1	TEXT	Risk factors	0	0	0
+Sex - Oral receptive	SEX_ORALRE	1	TEXT	Risk factors	0	0	0
+Sex - Oral insertive	SEX_ORALIN	1	TEXT	Risk factors	0	0	0
+Sex - Oral - Not specified	SEX_ORALNS	1	TEXT	Risk factors	0	0	0
+STI - Presence	OTH_STI	1	TEXT	Risk factors	0	0	0
+STI - Genital ulcer disease	GEN_UL_DIS	1	TEXT	Risk factors	0	0	0
+STI - Anogenital warts	GEN_WARTS	1	TEXT	Risk factors	0	0	0
+STI - Chlamydia	CHLAMYDIA	1	TEXT	Risk factors	0	0	0
+STI - Mycoplasma genitalium	MYCOP_GENI	1	TEXT	Risk factors	0	0	0
+STI - Genital Herpes	GEN_HERPES	1	TEXT	Risk factors	0	0	0
+STI - HIV	HIV_INF	1	TEXT	Risk factors	0	0	0
+STI - Lymphogranuloma venereum	LGV_INF	1	TEXT	Risk factors	0	0	0
+STI - Syphilis	SYPH	1	TEXT	Risk factors	0	0	0
+STI - Trichomoniasis	TRICHOMON	1	TEXT	Risk factors	0	0	0
+STI - Other	OTHUNL_STI	1	TEXT	Risk factors	0	0	0
+STI - Other - List	OTH_STI_SP	25	TEXT	Risk factors	0	0	0
+EGASP Laboratory	EGASP_LAB	15	TEXT	Specimen	0	0	0
+Date of Gram stain	DATE_GRAM	8	DATE	Specimen	0	0	0
+Gram stain result	GRAM_RSLT	1	TEXT	Specimen	0	0	0
+Specimen quality - Culture	SPECQUALBC	1	TEXT	Specimen	0	0	0
+Date of culture	DATE_CULT	8	DATE	Specimen	0	0	0
+Specimen quality - AST	SPECQUALBT	1	TEXT	Specimen	0	0	0
+Susceptibility retested	RETESTED	1	TEXT	Microbiology	0	0	0
+Susceptibility retested date	DATE_CONF	8	DATE	Microbiology	0	0	0
+NAAT Neisseria gonorrhoea	NAAT_NG	1	TEXT	Microbiology	0	0	0
+Origin notes	ORIGINNOTE	255	TEXT	Location	0	0	0
+Species notes	SPECIES_NT	255	TEXT	Origin	0	0	0
+Species scale notes	SCALENOTES	255	TEXT	Farm	0	0	0
+Production notes	PROD_NOTES	255	TEXT	Origin	0	0	0
+Market category notes	MKTCATNOTE	255	TEXT	Origin	0	0	0
+Reason notes	REAS_NOTES	255	TEXT	Specimen	0	0	0
+Surveillance program	SURV_PROG	50	TEXT	Origin	0	0	0
+Specimen notes	SPEC_NOTES	255	TEXT	Specimen	0	0	0
+Resistance phenotype	PHENO_CODE	5	TEXT	Microbiology	0	0	0
+Clone or strain	STRAINCODE	7	TEXT	Microbiology	0	0	0
+Strain notes	STRAINNOTE	255	TEXT	Microbiology	0	0	0
+Guideline version	GUIDELN_VR	255	TEXT	Microbiology	0	0	0
+Guideline notes	GUIDELN_NT	255	TEXT	Microbiology	0	0	0
+Interpretation criteria	ASTINTCRIT	8	TEXT	Microbiology	0	0	0
+Year	X_YEAR	10	TEXT	Other	0	0	0
+Date reception	X_DATERCPT	8	DATE	Other	0	0	0
+Municipality	X_MUNICIP	10	TEXT	Location	0	0	0
+Suspected case	X_SUSPCASE	10	TEXT	Other	0	0	0
+Treatment	X_TREATMNT	10	TEXT	Other	0	0	0
+Type of antibiotic	X_TYPEABX	20	TEXT	Other	0	0	0
+Vaccination	X_VACCIN	10	TEXT	Other	0	0	0
+DD Test date	X_DDDATE	8	DATE	Other	0	0	0
+Colonies with zone-AZM	X_COL_AZM	10	TEXT	Other	0	0	0
+Colonies with zone-CLR	X_COL_CLR	10	TEXT	Other	0	0	0
+Colonies with zone-ERY	X_COL_ERY	10	TEXT	Other	0	0	0
+ER_PCR	X_ER_PCR	8	TEXT	Microbiology	0	0	0

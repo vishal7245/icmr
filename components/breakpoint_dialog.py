@@ -15,6 +15,7 @@ class BreakpointDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle("Breakpoints")
+        self.setWindowFlags(self.windowFlags() | Qt.Tool)
         self.setFixedSize(1080, 720)
         self.data = data
         self.breakpoint_data = self.fetch_breakpoints()
@@ -40,6 +41,7 @@ class BreakpointDialog(QDialog):
         self.ui.breakpoint_add_button.clicked.connect(self.new_breakpoint)
         self.ui.breakpoint_delete_button.clicked.connect(self.delete_breakpoint)
         self.ui.breakpoint_ok_button.clicked.connect(self.accept_data)
+        self.ui.breakpoint_cancel_button.clicked.connect(self.reject)
 
         # Breakpoint table setup
         self.ui.breakpoint_table.setColumnCount(10)
@@ -188,3 +190,5 @@ class BreakpointDialog(QDialog):
 
         self.data_frame_signal.emit(csv_data)
         self.accept()
+
+   

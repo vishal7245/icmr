@@ -16,6 +16,7 @@ class NewBreakpointDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle("New Breakpoint")
+        self.setWindowFlags(self.windowFlags() | Qt.Tool)
         self.setFixedSize(800, 600)
         self.data = data
         

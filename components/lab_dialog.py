@@ -14,6 +14,7 @@ class LabDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle("Laboratories")
+        self.setWindowFlags(self.windowFlags() | Qt.Tool)
         self.ui.tableWidget.setColumnCount(4)
         self.ui.tableWidget.setHorizontalHeaderLabels(["Country Code", "Laboratory Code","File Name","Lab Name"])
         self.ui.tableWidget.verticalHeader().setVisible(False)

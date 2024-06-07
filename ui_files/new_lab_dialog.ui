@@ -692,6 +692,19 @@
        <string>0</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="encryption_button">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>60</y>
+        <width>181</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Encryption</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_7">
      <property name="geometry">
