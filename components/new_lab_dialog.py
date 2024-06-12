@@ -4,6 +4,8 @@ from modules.ui_new_lab_dialog import Ui_Dialog
 from components.breakpoint_dialog import BreakpointDialog
 from components.new_datafield_dialog import NewDataFieldDialog
 from components.encryption_dialog import EncryptionDialog
+from components.antibiotic_panels_dialog import AntibioticPanelsDialog
+from components.antibiotic_profile_dialog import AntibioticProfileDialog
 from PySide6.QtCore import Qt
 import pandas as pd
 from io import StringIO
@@ -105,6 +107,10 @@ class NewLabDialog(QDialog):
         self.ui.general_combined_radio.clicked.connect(self.update_num_datafields)
         self.ui.data_fields_modify_button.clicked.connect(self.open_modify_list)
         self.ui.encryption_button.clicked.connect(self.open_encryption_dialog)
+        self.ui.antibiotics_panels_button.clicked.connect(self.open_antibiotic_panels_dialog)
+        self.ui.antibiotics_profiles_button.clicked.connect(self.open_antibiotic_profile_dialog)
+        self.ui.antibiotics_expertrules_button.clicked.connect(self.open_expert_rules)
+        self.ui.antibiotics_print_button.clicked.connect(self.create_antibiotic_dataframe)
 
         # Store original antibiotics
         self.original_antibiotics = []
@@ -308,18 +314,45 @@ class NewLabDialog(QDialog):
         self.selected_row = row
         self.ui.location_table_list.selectRow(row)
 
-    def open_breakpoint_dialog(self):
-        ANTIBIOTIC_CODES = []
+
+    def create_antibiotic_dataframe(self):
+        ANTIBIOTIC_CODE = []
         ANTIBIOTIC_FULL_NAME = []
         ANTIBIOTIC_NAME_ = []
         ANTIBIOTIC_GUIDELINES = []
         ANTIBIOTIC_TEST = []
-        antibiotics_count = self.ui.antibiotic_local_list.count()
-        if antibiotics_count == 0:
-            QMessageBox.warning(self, "Warning", "No antibiotics selected", QMessageBox.Ok)
-            return
-        else:
-            for index in range(self.ui.antibiotic_local_list.count()):
+        ANTIBIOTIC_POTENCY = []
+
+        for index in range(self.ui.antibiotic_local_list.count()):
+            item = self.ui.antibiotic_local_list.item(index)
+            ANTIBIOTIC_CODE.append(item.data(ANTIBIOTIC_CODE_ROLE))
+            ANTIBIOTIC_FULL_NAME.append(item.data(ANTIBIOTIC_FULL_NAME_ROLE))
+            ANTIBIOTIC_NAME_.append(item.data(ANTIBIOTIC_NAME_ROLE))
+            ANTIBIOTIC_GUIDELINES.append(item.data(ANTIBIOTIC_GUIDELINES_ROLE))
+            ANTIBIOTIC_TEST.append(item.data(ANTIBIOTIC_TEST_ROLE))
+            ANTIBIOTIC_POTENCY.append(item.data(ANTIBIOTIC_POTENCY_ROLE))
+
+        data = {
+            "ANTIBIOTIC_CODE": ANTIBIOTIC_CODE,
+            "ANTIBIOTIC_FULL_NAME": ANTIBIOTIC_FULL_NAME,
+            "ANTIBIOTIC_NAME": ANTIBIOTIC_NAME_,
+            "ANTIBIOTIC_GUIDELINES": ANTIBIOTIC_GUIDELINES,
+            "ANTIBIOTIC_TEST": ANTIBIOTIC_TEST,
+            "ANTIBIOTIC_POTENCY": ANTIBIOTIC_POTENCY
+        }
+
+        df = pd.DataFrame(data)
+        return df
+
+    def open_breakpoint_dialog(self):
+        if self.antibiotic_check() :
+            ANTIBIOTIC_CODES = []
+            ANTIBIOTIC_FULL_NAME = []
+            ANTIBIOTIC_NAME_ = []
+            ANTIBIOTIC_GUIDELINES = []
+            ANTIBIOTIC_TEST = []
+            antibiotics_count = self.ui.antibiotic_local_list.count()
+            for index in range(antibiotics_count):
                 item = self.ui.antibiotic_local_list.item(index)
                 ANTIBIOTIC_CODES.append(item.data(ANTIBIOTIC_CODE_ROLE))
                 ANTIBIOTIC_FULL_NAME.append(item.data(ANTIBIOTIC_FULL_NAME_ROLE))
@@ -327,18 +360,18 @@ class NewLabDialog(QDialog):
                 ANTIBIOTIC_GUIDELINES.append(item.data(ANTIBIOTIC_GUIDELINES_ROLE))
                 ANTIBIOTIC_TEST.append(item.data(ANTIBIOTIC_TEST_ROLE))
 
-        data = {
-            "ANTIBIOTIC_CODES": ANTIBIOTIC_CODES,
-            "ANTIBIOTIC_FULL_NAME": ANTIBIOTIC_FULL_NAME,
-            "ANTIBIOTIC_NAME_": ANTIBIOTIC_NAME_,
-            "ANTIBIOTIC_GUIDELINES": ANTIBIOTIC_GUIDELINES,
-            "ANTIBIOTIC_TEST": ANTIBIOTIC_TEST
-        }
+            data = {
+                "ANTIBIOTIC_CODES": ANTIBIOTIC_CODES,
+                "ANTIBIOTIC_FULL_NAME": ANTIBIOTIC_FULL_NAME,
+                "ANTIBIOTIC_NAME_": ANTIBIOTIC_NAME_,
+                "ANTIBIOTIC_GUIDELINES": ANTIBIOTIC_GUIDELINES,
+                "ANTIBIOTIC_TEST": ANTIBIOTIC_TEST
+            }
 
-        df = pd.DataFrame(data)
-        breakpoint_dialog = BreakpointDialog(data=df)
-        breakpoint_dialog.data_frame_signal.connect(self.handle_breakpoint_data)
-        breakpoint_dialog.exec()
+            df = pd.DataFrame(data)
+            breakpoint_dialog = BreakpointDialog(data=df)
+            breakpoint_dialog.data_frame_signal.connect(self.handle_breakpoint_data)
+            breakpoint_dialog.exec()
 
     def handle_breakpoint_data(self, data):
         df = pd.read_csv(StringIO(data))
@@ -420,6 +453,11 @@ class NewLabDialog(QDialog):
             item.setText(row["FIELD_DESCRIPTION"])
             self.ui.data_fields_list.addItem(item)
 
+    def antibiotic_check(self):
+        if self.ui.antibiotic_local_list.count() == 0:
+            QMessageBox.warning(self, "Warning", "No antibiotics selected", QMessageBox.Ok)
+            return False
+        return True
         
     
     def open_modify_list(self):
@@ -443,3 +481,16 @@ class NewLabDialog(QDialog):
         self.update_datafield_list(self.datafield_df)
         print(self.datafield_df)
 
+    def open_antibiotic_panels_dialog(self):
+        if self.antibiotic_check():
+            antibiotic_panels_dialog = AntibioticPanelsDialog()
+            antibiotic_panels_dialog.exec()
+
+    def open_antibiotic_profile_dialog(self):
+        if self.antibiotic_check():
+            df = self.create_antibiotic_dataframe()
+            antibiotic_profile_dialog = AntibioticProfileDialog(df)
+            antibiotic_profile_dialog.exec()
+
+    def open_expert_rules(self):
+        QMessageBox.warning(self, "Warning", "Unavailable", QMessageBox.Ok)
