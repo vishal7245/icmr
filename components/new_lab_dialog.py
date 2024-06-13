@@ -111,8 +111,8 @@ class NewLabDialog(QDialog):
         self.ui.antibiotics_panels_button.clicked.connect(self.open_antibiotic_panels_dialog)
         self.ui.antibiotics_profiles_button.clicked.connect(self.open_antibiotic_profile_dialog)
         self.ui.antibiotics_expertrules_button.clicked.connect(self.open_expert_rules)
-        self.ui.antibiotics_print_button.clicked.connect(self.create_antibiotic_dataframe)
-
+        self.ui.antibiotics_add_button.clicked.connect(self.initaialize_empty_panel_dataframe)
+        self.ui.antibiotics_remove_button.clicked.connect(self.initaialize_empty_panel_dataframe)
         # Store original antibiotics
         self.original_antibiotics = []
         for i in range(self.ui.antibiotic_list.count()):
@@ -482,10 +482,27 @@ class NewLabDialog(QDialog):
         self.update_datafield_list(self.datafield_df)
         print(self.datafield_df)
 
+    def initaialize_empty_panel_dataframe(self):
+        organism_groups = ["Staphylococcus sp.", "Streptococcus sp.", "Streptococcus pneumoniae", "Streptococcus viridans", "Enterococcus sp.", "Gram positive urine", "Gram negative", "Gram negative urine", "Salmonella sp.", "Shigella sp.", "Pseudomonas sp.", "Non-fermenters", "Haemophilus sp.", "Campylobacter sp.", "Neisseria gonorrhoeae", "Neisseria meningitidis", "Anaerobes", "Mycobacteria", "Fungi", "Parasites"]
+        antibiotics_full_name = []
+        antibiotics_df = self.create_antibiotic_dataframe()
+        for index, row in antibiotics_df.iterrows():
+            antibiotics_full_name.append(row['ANTIBIOTIC_FULL_NAME'])
+        df = pd.DataFrame(0, index=antibiotics_full_name, columns=organism_groups)
+        self.antibiotic_panels_dataframe = df
+
     def open_antibiotic_panels_dialog(self):
         if self.antibiotic_check():
-            antibiotic_panels_dialog = AntibioticPanelsDialog()
+            df = self.create_antibiotic_dataframe()
+            antibiotic_panels_dialog = AntibioticPanelsDialog(df, self.antibiotic_panels_dataframe)
+            antibiotic_panels_dialog.dataframe_signal.connect(self.handle_antibiotic_panels_dataframe)
             antibiotic_panels_dialog.exec()
+
+    def handle_antibiotic_panels_dataframe(self, data):
+        self.antibiotic_panels_dataframe = pd.read_csv(StringIO(data))
+        # convert NaN to None
+        self.antibiotic_panels_dataframe = self.antibiotic_panels_dataframe.where(pd.notnull(self.antibiotic_panels_dataframe), None)
+        self.antibiotic_panels_dataframe = self.antibiotic_panels_dataframe.set_index(self.antibiotic_panels_dataframe.columns[0])
 
     def initialize_empty_profile_dataframe(self):
         profile_table_df = pd.DataFrame(columns=["Organism Groups", "Antibiotics"])
