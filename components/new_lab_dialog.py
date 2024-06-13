@@ -44,6 +44,7 @@ class NewLabDialog(QDialog):
         self.populate_datafields()
         self.update_num_datafields()
         self.datafield_item_to_df()
+        self.antibiotic_profile_dataframe = self.initialize_empty_profile_dataframe()
 
 
         self.ui.tabWidget.setCurrentIndex(0)
@@ -486,11 +487,24 @@ class NewLabDialog(QDialog):
             antibiotic_panels_dialog = AntibioticPanelsDialog()
             antibiotic_panels_dialog.exec()
 
+    def initialize_empty_profile_dataframe(self):
+        profile_table_df = pd.DataFrame(columns=["Organism Groups", "Antibiotics"])
+        organism_groups = ["Staphylococcus sp.", "Streptococcus sp.", "Streptococcus pneumoniae", "Streptococcus viridans", "Enterococcus sp.", "Gram positive urine", "Gram negative", "Gram negative urine", "Salmonella sp.", "Shigella sp.", "Pseudomonas sp.", "Non-fermenters", "Haemophilus sp.", "Campylobacter sp.", "Neisseria gonorrhoeae", "Neisseria meningitidis", "Anaerobes", "Mycobacteria", "Fungi", "Parasites"]
+        for i, organism_group in enumerate(organism_groups):
+            profile_table_df.loc[i] = {"Organism Groups": organism_group, "Antibiotics": None}
+        return profile_table_df
+
     def open_antibiotic_profile_dialog(self):
         if self.antibiotic_check():
             df = self.create_antibiotic_dataframe()
-            antibiotic_profile_dialog = AntibioticProfileDialog(df)
+            antibiotic_profile_dialog = AntibioticProfileDialog(df, self.antibiotic_profile_dataframe)
+            antibiotic_profile_dialog.dataframe_signal.connect(self.handle_antibiotic_profile_dataframe)
             antibiotic_profile_dialog.exec()
+
+    def handle_antibiotic_profile_dataframe(self, data):
+        self.antibiotic_profile_dataframe = pd.read_csv(StringIO(data))
+        # convert NaN to None
+        self.antibiotic_profile_dataframe = self.antibiotic_profile_dataframe.where(pd.notnull(self.antibiotic_profile_dataframe), None)
 
     def open_expert_rules(self):
         QMessageBox.warning(self, "Warning", "Unavailable", QMessageBox.Ok)

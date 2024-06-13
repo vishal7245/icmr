@@ -6,7 +6,9 @@ import pandas as pd
 from io import StringIO
 
 class AntibioticProfileDialog(QDialog):
-    def __init__(self, data):
+
+    dataframe_signal = Signal(str)
+    def __init__(self, data, profile_state):
         super(AntibioticProfileDialog, self).__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -15,6 +17,7 @@ class AntibioticProfileDialog(QDialog):
         self.setFixedSize(1080, 720)
 
         self.antibiotic_dataframe = data
+        self.selected_antibiotic_dataframe = profile_state
 
         # Table Logic
         self.ui.antibiotic_profile_table.setColumnCount(2)
@@ -33,13 +36,21 @@ class AntibioticProfileDialog(QDialog):
             item.setFlags(item.flags() & ~Qt.ItemIsEditable)
             self.ui.antibiotic_profile_table.setItem(i, 1, item)
 
-
+        self.repopulate_table()
 
         # Signals
         self.ui.antibiotic_profile_table.cellDoubleClicked.connect(self.open_add_antibiotic_profile_dialog)
         self.ui.add_pushbutton.clicked.connect(self.add_button_clicked)
         self.ui.edit_pushbutton.clicked.connect(self.edit_profile)
+        self.ui.ok_pushbutton.clicked.connect(self.accept_data)
+        self.ui.cancel_pushbutton.clicked.connect(self.reject)
     
+    def repopulate_table(self):
+        for index, row in self.selected_antibiotic_dataframe.iterrows():
+            item = QTableWidgetItem(row['Antibiotics'])
+            item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+            self.ui.antibiotic_profile_table.setItem(index, 1, item)
+
     def open_add_antibiotic_profile_dialog(self, row, column):
         row_data = self.ui.antibiotic_profile_table.item(row, column).text()
         add_profile_dialog = AddAntibioticProfileDialog(self.antibiotic_dataframe, row, column, row_data)
@@ -90,7 +101,7 @@ class AntibioticProfileDialog(QDialog):
                 antibiotics = None
             profile_table_df.loc[i] = {"Organism Groups": organism_group, "Antibiotics": antibiotics}
 
-        self.antibiotic_dataframe = profile_table_df        
+        self.selected_antibiotic_dataframe = profile_table_df        
         
 
     def add_button_clicked(self):
@@ -100,3 +111,9 @@ class AntibioticProfileDialog(QDialog):
             self.open_add_antibiotic_profile_dialog(row, 1)
         else:
             QMessageBox.warning(self, "Warning", "Please select an organism group to add antibiotics to.")
+
+
+    def accept_data(self):
+        csv_data = self.selected_antibiotic_dataframe.to_csv(index=False)
+        self.dataframe_signal.emit(csv_data)
+        self.accept()
