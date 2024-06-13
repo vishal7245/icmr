@@ -1,8 +1,9 @@
-from PySide6.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QMessageBox
+from PySide6.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView
 from modules.ui_antibiotic_profile_dialog import Ui_Dialog
 from components.add_antibiotic_profile_dialog import AddAntibioticProfileDialog
 from PySide6.QtCore import Qt, Signal
 import pandas as pd
+from io import StringIO
 
 class AntibioticProfileDialog(QDialog):
     def __init__(self, data):
@@ -20,6 +21,7 @@ class AntibioticProfileDialog(QDialog):
         self.ui.antibiotic_profile_table.verticalHeader().setVisible(False)
         self.ui.antibiotic_profile_table.setColumnWidth(0, 250)
         self.ui.antibiotic_profile_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.ui.antibiotic_profile_table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.antibiotic_profile_table.setHorizontalHeaderLabels(["Organism Groups", "Antibiotics"])
         organism_groups = ["Staphylococcus sp.", "Streptococcus sp.", "Streptococcus pneumoniae", "Streptococcus viridans", "Enterococcus sp.", "Gram positive urine", "Gram negative", "Gram negative urine", "Salmonella sp.", "Shigella sp.", "Pseudomonas sp.", "Non-fermenters", "Haemophilus sp.", "Campylobacter sp.", "Neisseria gonorrhoeae", "Neisseria meningitidis", "Anaerobes", "Mycobacteria", "Fungi", "Parasites"]
         self.ui.antibiotic_profile_table.setRowCount(len(organism_groups))
@@ -36,12 +38,60 @@ class AntibioticProfileDialog(QDialog):
         # Signals
         self.ui.antibiotic_profile_table.cellDoubleClicked.connect(self.open_add_antibiotic_profile_dialog)
         self.ui.add_pushbutton.clicked.connect(self.add_button_clicked)
+        self.ui.edit_pushbutton.clicked.connect(self.edit_profile)
     
     def open_add_antibiotic_profile_dialog(self, row, column):
-        add_profile_dialog = AddAntibioticProfileDialog(self.antibiotic_dataframe)
+        row_data = self.ui.antibiotic_profile_table.item(row, column).text()
+        add_profile_dialog = AddAntibioticProfileDialog(self.antibiotic_dataframe, row, column, row_data)
+        add_profile_dialog.profile_signal.connect(self.handle_new_profile_data)
         add_profile_dialog.exec()
 
+    def edit_profile(self):
+        selected_item = self.ui.antibiotic_profile_table.selectedItems()
+        if selected_item[0].text():
+            row = selected_item[0].row()
+            column = selected_item[0].column()
+            row_data = self.ui.antibiotic_profile_table.item(row, column).text()
+            add_profile_dialog = AddAntibioticProfileDialog(self.antibiotic_dataframe, row, column, row_data)
+            add_profile_dialog.profile_signal.connect(self.handle_new_profile_data)
+            add_profile_dialog.exec()
+        else:
+            QMessageBox.warning(self, "Warning", "Please select an organism group to edit antibiotics.")
 
+    def handle_new_profile_data(self, profile_data, supplement_data,table_row, column):
+        column = 1
+        profile_df = pd.read_csv(StringIO(profile_data))
+        if supplement_data == "None":
+            final_list = []
+            for index, row in profile_df.iterrows():
+                final_list.append(row['ANTIBIOTIC_CODE'])
+            final_string = ",".join(final_list)
+        else:
+            supplement_df = pd.read_csv(StringIO(supplement_data))
+            profile_list = []
+            supplement_list = []
+            for index, row in profile_df.iterrows():
+                profile_list.append(row['ANTIBIOTIC_CODE'])
+            for index, row in supplement_df.iterrows():
+                supplement_list.append(row['ANTIBIOTIC_CODE'])
+            final_string = ",".join(profile_list) + " (" + ",".join(supplement_list) + ")"
+        item = QTableWidgetItem(final_string)
+        item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+        self.ui.antibiotic_profile_table.setItem(table_row, column, item)
+            
+        # create profile table dataframe
+        profile_table_df = pd.DataFrame(columns=["Organism Groups", "Antibiotics"])
+        organism_groups = ["Staphylococcus sp.", "Streptococcus sp.", "Streptococcus pneumoniae", "Streptococcus viridans", "Enterococcus sp.", "Gram positive urine", "Gram negative", "Gram negative urine", "Salmonella sp.", "Shigella sp.", "Pseudomonas sp.", "Non-fermenters", "Haemophilus sp.", "Campylobacter sp.", "Neisseria gonorrhoeae", "Neisseria meningitidis", "Anaerobes", "Mycobacteria", "Fungi", "Parasites"]
+        for i, organism_group in enumerate(organism_groups):
+            item = self.ui.antibiotic_profile_table.item(i, 1)
+            if item is not None:  # Check if item is not None
+                antibiotics = item.text()
+            else:
+                antibiotics = None
+            profile_table_df.loc[i] = {"Organism Groups": organism_group, "Antibiotics": antibiotics}
+
+        self.antibiotic_dataframe = profile_table_df        
+        
 
     def add_button_clicked(self):
         selected_item = self.ui.antibiotic_profile_table.selectedItems()

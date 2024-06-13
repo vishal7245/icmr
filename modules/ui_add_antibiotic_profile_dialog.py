@@ -72,15 +72,15 @@ class Ui_Dialog(object):
         self.horizontalLayout = QHBoxLayout(self.layoutWidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.pushButton_2 = QPushButton(self.layoutWidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.ok_pushbutton = QPushButton(self.layoutWidget)
+        self.ok_pushbutton.setObjectName(u"ok_pushbutton")
 
-        self.horizontalLayout.addWidget(self.pushButton_2)
+        self.horizontalLayout.addWidget(self.ok_pushbutton)
 
-        self.pushButton = QPushButton(self.layoutWidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.cancel_pushbutton = QPushButton(self.layoutWidget)
+        self.cancel_pushbutton.setObjectName(u"cancel_pushbutton")
 
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.horizontalLayout.addWidget(self.cancel_pushbutton)
 
 
         self.retranslateUi(Dialog)
@@ -101,7 +101,7 @@ class Ui_Dialog(object):
         self.delete_profile_antibiotics_button.setText(QCoreApplication.translate("Dialog", u"<-", None))
         self.add_supplementary_button.setText(QCoreApplication.translate("Dialog", u"->", None))
         self.delete_supplementary_button.setText(QCoreApplication.translate("Dialog", u"<-", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"OK", None))
-        self.pushButton.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
+        self.ok_pushbutton.setText(QCoreApplication.translate("Dialog", u"OK", None))
+        self.cancel_pushbutton.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
     # retranslateUi
 
